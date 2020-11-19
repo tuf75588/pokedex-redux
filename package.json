@@ -14,8 +14,10 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-redux": "^7.1.11",
     "@types/react-router-dom": "^5.1.6",
+    "autoprefixer": "^10.0.2",
     "fast-levenshtein": "^3.0.0",
     "lodash-humps-ts": "^0.0.6",
+    "postcss": "^8.1.7",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-helmet-async": "^1.0.7",
@@ -29,6 +31,7 @@
     "react-spring": "^8.0.27",
     "react-waypoint": "^9.0.3",
     "redux": "^4.0.5",
+    "tailwindcss": "^2.0.1",
     "typescript": "^4.0.3",
     "web-vitals": "^0.2.4"
   },
@@ -56,7 +59,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "tailwindcss": "^2.0.1"
-  }
+  "devDependencies": {}
 }
