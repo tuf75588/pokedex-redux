@@ -15,6 +15,7 @@
     "@types/react-redux": "^7.1.11",
     "@types/react-router-dom": "^5.1.6",
     "autoprefixer": "^10.0.2",
+    "chokidar-cli": "^2.1.0",
     "fast-levenshtein": "^3.0.0",
     "lodash-humps-ts": "^0.0.6",
     "postcss": "^8.1.7",
@@ -36,6 +37,9 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.output.css",
+    "prestart": "yarn run build:tailwind",
+    "prebuild": "yarn run build:tailwind",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
