@@ -5,3 +5,9 @@ export enum HTTP_METHODS {
   DELETE = 'DELETE',
   PATCH = 'PATCH',
 }
+
+export function importImages(image: string, filetype?: string) {
+  return `${process.env.PUBLIC_URL}/assets/images/${image}/.${
+    filetype || 'png'
+  }`;
+}
