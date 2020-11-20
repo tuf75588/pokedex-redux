@@ -6,7 +6,7 @@ import Layout from './components/Layout';
 function App() {
   return (
     <div className="bg-white">
-      <Layout title="home">welcome to the home page!</Layout>
+      <Layout title="home">future homepage components will go here</Layout>
     </div>
   );
 }

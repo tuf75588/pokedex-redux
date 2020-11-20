@@ -27,7 +27,7 @@ function Navbar() {
       }
     >
       <img
-        className="w-10 h-10 transition duration=500 ease-in-out transform hover:rotate-180 cursor-pointer"
+        className="w-10 h-10 transition duration-500 ease-in-out transform hover:rotate-180 cursor-pointer"
         alt="Pokeball"
         src={importImages('pokeball')}
         onClick={() => scroll.scrollToTop()}

@@ -7,7 +7,7 @@ export enum HTTP_METHODS {
 }
 
 export function importImages(image: string, filetype?: string) {
-  return `${process.env.PUBLIC_URL}/assets/images/${image}/.${
+  return `${process.env.PUBLIC_URL}/assets/images/${image}.${
     filetype || 'png'
   }`;
 }
