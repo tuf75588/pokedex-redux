@@ -40,7 +40,7 @@ export const wrapReduxAsyncHandler = (
     });
 };
 
-export const transformSpriteToImage = (
+export const transformSpriteToBaseImage = (
   pokemonId: number,
   baseUrl: string
 ): string => {

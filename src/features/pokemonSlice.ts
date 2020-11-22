@@ -1,16 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fromApi from '../api/fromApi';
 import { SliceStatus } from '../globals';
-import { NamedAPIResource, NamedApiResource } from './types';
-import { camelCaseObject } from '../utils/camelCaseObject';
+import { NamedApiResource } from './types';
+import { camelcaseObject } from '../utils/camelCaseObject';
 import {
   statusHandlerReducer,
-  transformSpriteToImage,
+  transformSpriteToBaseImage,
   wrapReduxAsyncHandler,
 } from './utilities';
 
 import { baseImageUrl } from '../api/axios';
-import { stat } from 'fs';
 import { RootState } from './store';
 
 export const PAGINATE_SIZE = 6;
@@ -31,11 +30,11 @@ export type Pokemon = {
   abilities: {
     isHidden: boolean;
     slot: number;
-    ability: NamedAPIResource;
+    ability: NamedApiResource;
   }[];
-  forms: NamedAPIResource[];
+  forms: NamedApiResource[];
   moves: {
-    move: NamedAPIResource;
+    move: NamedApiResource;
   }[];
   sprites: {
     frontDefault: string;
@@ -47,15 +46,15 @@ export type Pokemon = {
     backFemale: string;
     backShinyFemale: string;
   };
-  species: NamedAPIResource[];
+  species: NamedApiResource[];
   stats: {
     baseStat: number;
     effort: number;
-    stat: NamedAPIResource;
+    stat: NamedApiResource;
   }[];
   types: {
     slot: number;
-    type: NamedAPIResource;
+    type: NamedApiResource;
   }[];
 };
 
@@ -134,3 +133,66 @@ export const {
 export const pokemonsSelector = (state: RootState) => {
   return state.pokemons;
 };
+
+const statusHandler = { initialize, error, success };
+export const getPokemons = wrapReduxAsyncHandler(
+  statusHandler,
+  async (dispatch, { page, cachedPokemons, pokemons }) => {
+    const size = PAGINATE_SIZE - (pokemons.length % PAGINATE_SIZE);
+    const results = cachedPokemons.slice(page, page + size);
+    dispatch(initializePokemonsReducer({ size }));
+    for await (const [index, { url }] of results.entries()) {
+      const pokemonId = Number(url.split('/').slice(-2)[0]);
+      const pokemon = await fromApi.getPokemonByNameOrId(pokemonId);
+      const pokemonImageUrl = transformSpriteToBaseImage(
+        pokemon.id,
+        baseImageUrl
+      );
+      dispatch(
+        getPokemonsReducer({
+          pokemon: {
+            ...camelcaseObject(pokemon),
+            sprites: {
+              frontDefault: pokemonImageUrl,
+            },
+          },
+          size,
+          index,
+        })
+      );
+    }
+  }
+);
+
+export const getPokemonById = wrapReduxAsyncHandler(
+  statusHandler,
+  async (dispatch, { pokemonId }) => {
+    const pokemon = await fromApi.getPokemonByNameOrId(pokemonId);
+    const pokemonImageUrl = transformSpriteToBaseImage(
+      pokemon.id,
+      baseImageUrl
+    );
+    const transformedPokemon = {
+      ...camelcaseObject(pokemon),
+      sprites: { frontDefault: pokemonImageUrl },
+    };
+    dispatch(getSinglePokemonReducer({ pokemon: transformedPokemon }));
+  }
+);
+export const getPokemonsDynamically = wrapReduxAsyncHandler(
+  statusHandler,
+  async (dispatch, { pokemonIds }) => {
+    for await (const id of pokemonIds) {
+      const pokemon = await fromApi.getPokemonByNameOrId(id);
+      const pokemonImageUrl = transformSpriteToBaseImage(
+        pokemon.id,
+        baseImageUrl
+      );
+      const transformedPokemon = {
+        ...camelcaseObject(pokemon),
+        sprites: { frontDefault: pokemonImageUrl },
+      };
+      dispatch(getSinglePokemonReducer({ pokemon: transformedPokemon }));
+    }
+  }
+);

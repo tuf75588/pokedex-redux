@@ -1,4 +1,3 @@
-import { DSAKeyPairKeyObjectOptions } from 'crypto';
 import { useState, useEffect } from 'react';
 
 const SCROLL_UP = 'up';

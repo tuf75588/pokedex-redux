@@ -1,3 +1,3 @@
 import humps from 'lodash-humps-ts';
 
-export const camelCaseObject = (object: object) => humps(object);
+export const camelcaseObject = (object: object) => humps(object);
