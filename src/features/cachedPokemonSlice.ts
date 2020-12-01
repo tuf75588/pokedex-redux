@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fromApi from '../api/fromApi';
 import { SliceStatus } from '../globals';
 import { RootState } from './store';
-import { NamedApiResource, NamedAPIResource } from './types';
+import { NamedApiResource } from './types';
 import { statusHandlerReducer, wrapReduxAsyncHandler } from './utilities';
 import Levenshtein from 'fast-levenshtein';
 import { shuffle } from '../utils/shuffle';

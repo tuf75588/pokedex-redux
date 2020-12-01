@@ -18,3 +18,6 @@ export function importImages(image: string, filetype?: string) {
     filetype || 'png'
   }`;
 }
+export const importPokemonImage = (image: string) => {
+  return `${process.env.PUBLIC_URL}/assets/pokemons/${image}.png`;
+};
