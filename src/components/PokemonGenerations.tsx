@@ -71,4 +71,92 @@ function PokemonGenerations({
     },
     []
   );
+  const pokemonGenerationsToIndex = useCallback(
+    (selectedGeneration: PokemonGenerationsEnum): number => {
+      const pokemonGenerations = Object.entries(PokemonGenerationsEnum);
+      let selectedIndex: number = 0;
+
+      pokemonGenerations.forEach(([_, b], index) => {
+        if (b === selectedGeneration) {
+          selectedIndex = index;
+        }
+      });
+
+      return selectedIndex;
+    },
+    []
+  );
+  return (
+    <Modal>
+      <Modal.Button
+        disabled={isLoading}
+        className={
+          'bg-primaryGray px-4 py-1 rounded-lg text-white hover:border-transparent focus:outline-none ' +
+          ' ' +
+          (isLoading
+            ? 'opacity-25 cursor-default'
+            : 'cursor-pointer transform hover:translate-y-1 hover:shadow transition-all duration-200 ease-in-out')
+        }
+      >
+        <div className="flex justify-between">
+          {selectedGeneration !== null ? (
+            <>
+              {generations[pokemonGenerationsToIndex(selectedGeneration)].map(
+                (image, index) => (
+                  <PokemonIcon
+                    key={`${image}-${index}`}
+                    src={image}
+                    alt={`Pokemon Icon Image`}
+                  />
+                )
+              )}
+            </>
+          ) : (
+            <>
+              <PokemonIcon
+                src={importPokemonImage('bulbasaur')}
+                alt="Bulbasaur"
+              />
+              <PokemonIcon
+                src={importPokemonImage('charmander')}
+                alt="Charmander"
+              />
+              <PokemonIcon
+                src={importPokemonImage('squirtle')}
+                alt="Squirtle"
+              />
+            </>
+          )}
+        </div>
+      </Modal.Button>
+      <Modal.Content
+        title="Pokémon Generations"
+        handleSaveModal={changeGenerationHandler}
+      >
+        <div className="mx-auto py-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-5 gap-y-6">
+          {generations.map((images, index) => (
+            <PokemonGenerationsCard
+              key={`generations-${index}`}
+              images={images}
+              isSelected={
+                selectedGeneration === indexToPokemonGenerations(index) &&
+                selectedGeneration !== null
+              }
+              generation={index + 1}
+              handleClick={() => {
+                setSelectedGeneration((previousGeneration) => {
+                  const pickedGeneration = indexToPokemonGenerations(index);
+                  return previousGeneration === pickedGeneration
+                    ? null
+                    : pickedGeneration;
+                });
+              }}
+            />
+          ))}
+        </div>
+      </Modal.Content>
+    </Modal>
+  );
 }
+
+export default PokemonGenerations;
