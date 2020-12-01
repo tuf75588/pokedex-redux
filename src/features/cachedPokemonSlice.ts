@@ -107,3 +107,23 @@ const statusHandler = { initialize, error, success };
 export function cachedPokemonsSelector(state: RootState) {
   return state.cachedPokemons;
 }
+
+export const getCachedPokemons = wrapReduxAsyncHandler(
+  statusHandler,
+  async (dispatch) => {
+    const {
+      results,
+    }: { results: NamedApiResource[] } = await fromApi.getPokemons(
+      Number(PokemonGenerationsEnum.GENERATION_7)
+    );
+    const transformedPokemons = results.map((res: NamedApiResource) => ({
+      ...res,
+      distance: 0,
+    }));
+    dispatch(
+      getCachedPokemonsReducer({
+        cachedPokemons: camelcaseObject(transformedPokemons),
+      })
+    );
+  }
+);
