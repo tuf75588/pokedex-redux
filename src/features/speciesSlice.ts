@@ -3,9 +3,9 @@ import { Root } from 'postcss';
 import fromAPI from '../api/fromApi';
 import fromApi from '../api/fromApi';
 import { SliceStatus } from '../globals';
-import { camelCaseObject } from '../utils/camelCaseObject';
+import { camelcaseObject } from '../utils/camelCaseObject';
 import { RootState } from './store';
-import { APIResource, NamedApiResource } from './types';
+import NamedApiResource } from './types';
 import { statusHandlerReducer, wrapReduxAsyncHandler } from './utilities';
 
 // type representing a specific pokemon species
@@ -113,7 +113,7 @@ export const getSpeciesByName = wrapReduxAsyncHandler(
   statusHandler,
   async (dispatch, { pokemonName }) => {
     const pokemonSpecies = await fromAPI.getSpeciesByNameOrId(pokemonName);
-    dispatch(getSpeciesReducer({ species: camelCaseObject(pokemonSpecies) }));
+    dispatch(getSpeciesReducer({ species: camelcaseObject(pokemonSpecies) }));
   }
 );
 
@@ -121,6 +121,6 @@ export const getSpeciesById = wrapReduxAsyncHandler(
   statusHandler,
   async (dispatch, { pokemonId }) => {
     const pokemonSpecies = await fromApi.getSpeciesByNameOrId(pokemonId);
-    dispatch(getSpeciesReducer({ species: camelCaseObject(pokemonSpecies) }));
+    dispatch(getSpeciesReducer({ species: camelcaseObject(pokemonSpecies) }));
   }
 );
