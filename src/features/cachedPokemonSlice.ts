@@ -6,7 +6,7 @@ import { NamedApiResource } from './types';
 import { statusHandlerReducer, wrapReduxAsyncHandler } from './utilities';
 import Levenshtein from 'fast-levenshtein';
 import { shuffle } from '../utils/shuffle';
-import { camelcaseObject } from '../utils/camelCaseObject';
+import { camelcaseObject } from '../utils/camelcaseObject';
 
 export enum PokemonGenerationsEnum {
   GENERATION_1 = '151',

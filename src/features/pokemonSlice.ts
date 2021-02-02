@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fromApi from '../api/fromApi';
 import { SliceStatus } from '../globals';
 import { NamedApiResource } from './types';
-import { camelcaseObject } from '../utils/camelCaseObject';
+import { camelcaseObject } from '../utils/camelcaseObject';
 import {
   statusHandlerReducer,
   transformSpriteToBaseImage,
