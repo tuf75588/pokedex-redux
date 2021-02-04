@@ -4,7 +4,7 @@ import fromApi from '../api/fromApi';
 import { SliceStatus } from '../globals';
 import { camelcaseObject } from '../utils/camelcaseObject';
 import { RootState } from './store';
-import {NamedApiResource } from './types';
+import { NamedApiResource } from './types';
 import { statusHandlerReducer, wrapReduxAsyncHandler } from './utilities';
 
 // type representing a specific pokemon species
