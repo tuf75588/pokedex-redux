@@ -35,7 +35,7 @@ type Props = {
 function PokemonEvolution({ pokemon, chain, selectedBackgroundColor }: Props) {
   const history = useHistory();
   const imagePlaceholder = pokemon.types.map(({ type }) => {
-    const [[_, image]] = Object.entries(PokemonTypePlaceholders).filter(
+    const [[, image]] = Object.entries(PokemonTypePlaceholders).filter(
       ([key, _]) => {
         return key === type.name;
       }
