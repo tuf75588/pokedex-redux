@@ -44,6 +44,10 @@ function PokemonDetailsBiography({ pokemon, species }: Props): JSX.Element {
             }m)`}
           />
           <PokemonInformation
+            title="Weight"
+            content={`${(pokemon.weight / 10).toFixed(1)} kg`}
+          />
+          <PokemonInformation
             title="Abilities"
             content={`${pokemon.abilities.map((ability, index) => {
               return (
