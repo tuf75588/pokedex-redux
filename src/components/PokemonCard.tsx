@@ -3,7 +3,7 @@ import { Pokemon } from '../features/pokemonSlice';
 import { PokemonTypeColors, PokemonTypePlaceholders } from '../globals';
 import leftPad from '../utils/leftPad';
 import Trail from './Trail';
-import ProgressImage, {
+import  {
   ProgressiveImage,
 } from 'react-progressive-image-loading';
 import { useHistory } from 'react-router-dom';
