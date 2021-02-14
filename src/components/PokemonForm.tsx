@@ -3,14 +3,13 @@ import { GoSearch } from 'react-icons/go';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   PokemonGenerationsEnum,
-  searchPokemonsByNameReducer,
+  searchByPokemonsNameReducer,
   filterPokemonsByGenerationReducer,
   randomizePokemonsReducer,
 } from '../features/cachedPokemonSlice';
 import {
   pokemonsSelector,
   resetPokemonsReducer,
-  resetPokemonsSelector,
 } from '../features/pokemonSlice';
 import { SliceStatus } from '../globals';
 import PokemonGenerations from './PokemonGenerations';
@@ -50,7 +49,7 @@ function PokemonForm({
   const submitFormHandler = () => {
     if (!isLoading) {
       dispatch(resetPokemonsReducer({}));
-      dispatch(searchPokemonsByNameReducer({ pokemonName: value }));
+      dispatch(searchByPokemonsNameReducer({ pokemonName: value }));
       mutatePage(0);
     }
   };
