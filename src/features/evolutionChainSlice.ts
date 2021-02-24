@@ -80,7 +80,7 @@ export const {
 } = evolutionChainSlice.actions;
 export const statusHandler = { initialize, error, success };
 
-export const evolutionChainsSelector = (state: RootState) => {
+export const evolutionChainSelector = (state: RootState) => {
   return state.evolutionChain;
 };
 export const evolutionChainReducer = evolutionChainSlice.reducer;
