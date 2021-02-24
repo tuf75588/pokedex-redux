@@ -6,7 +6,7 @@ import Layout from '../components/Layout';
 import PokemonDetailsBiography from '../components/PokemonDetailsBiography';
 import PokemonDetailsEvolution from '../components/PokemonDetailsEvolution';
 import PokemonDetailsHeader from '../components/PokemonDetailsHeader';
-import PokemonDetailsStats from '../components/PokemonStats';
+import PokemonDetailsStats from '../components/PokemonDetailsStats';
 import Tab from '../components/Tab';
 import {
   getPokemonById,
@@ -84,4 +84,156 @@ function PokemonDetailsPage({ match }: RouteComponentProps<MatchParams>) {
     }
     // eslint-disable-next-line
   }, [selectedEvolutionChain]);
+
+  useEffect(() => {
+    if (pokemons.data.length === 0) {
+      dispatch(getPokemonById({ pokemonId: id }));
+    }
+    dispatch(getSpeciesById({ pokemonId: id }));
+    // eslint-disable-next-line
+  }, [id, pokemons.data.length]);
+
+  useEffect(() => {
+    if (evolutionChainId) {
+      dispatch(getEvolutionChainById({ id: Number(evolutionChainId) }));
+    }
+    // eslint-disable-next-line
+  }, [selectedPokemon, evolutionChainId]);
+
+  const backgroundColors = selectedPokemon?.types.map(({ type }) => {
+    const [[, backgroundColor]] = Object.entries(PokemonTypeColors).filter(
+      ([key, _]) => key === type.name
+    );
+
+    return backgroundColor;
+  });
+
+  const selectedBackgroundColor = backgroundColors && backgroundColors[0];
+
+  const isPageLoading =
+    species.status.state === SliceStatus.IDLE ||
+    species.status.state === SliceStatus.LOADING ||
+    evolutionChain.status.state === SliceStatus.IDLE ||
+    evolutionChain.status.state === SliceStatus.LOADING ||
+    pokemons.status.state === SliceStatus.IDLE ||
+    pokemons.status.state === SliceStatus.LOADING;
+
+  return (
+    <Layout title={capitalize(selectedPokemon?.name)}>
+      {isPageLoading ? (
+        <div className="text-center mx-auto mt-12">
+          <ScaleLoader color="#E3350D" radius={16} />
+        </div>
+      ) : (
+        <React.Fragment>
+          <React.Fragment>
+            {selectedPokemon &&
+              selectedSpecies &&
+              selectedBackgroundColor &&
+              selectedEvolutionChain && (
+                <div className="pb-8">
+                  <button
+                    onClick={() => history.push('/')}
+                    className="text-primary font-semibold transform hover:-translate-y-1 transition-transform ease-in duration-150 focus:outline-none"
+                  >
+                    <span className="text-primary font-semibold">Go Back</span>
+                  </button>
+                  <div
+                    className="flex flex-col lg:flex-row justify-center items-start w-full mx-auto my-4 rounded-lg shadow-lg"
+                    style={{
+                      backgroundColor:
+                        selectedBackgroundColor &&
+                        selectedBackgroundColor.medium,
+                    }}
+                  >
+                    <PokemonDetailsHeader
+                      pokemon={selectedPokemon}
+                      species={selectedSpecies}
+                      selectedBackgroundColor={selectedBackgroundColor}
+                    />
+                    <div className="bg-white lg:mt-0 rounded-t-3xl rounded-b-lg lg:rounded-t-none lg:rounded-b-none lg:rounded-r-lg overflow-hidden w-full pt-16 lg:pt-8 px-6 md:px-12 lg:px-24">
+                      <div className="flex flex-row justify-between w-full">
+                        <Tab
+                          isSelected={activeTab === 'biography'}
+                          handleSelect={() => setActiveTab('biography')}
+                        >
+                          Biography
+                        </Tab>
+                        <Tab
+                          isSelected={activeTab === 'stats'}
+                          handleSelect={() => setActiveTab('stats')}
+                        >
+                          Stats
+                        </Tab>
+                        <Tab
+                          isSelected={activeTab === 'evolutions'}
+                          handleSelect={() => setActiveTab('evolutions')}
+                        >
+                          Evolutions
+                        </Tab>
+                      </div>
+                      <div className="relative mt-8 lg:h-178">
+                        {transitions.map(({ item, key, props }) => {
+                          let page: JSX.Element = (
+                            <PokemonDetailsBiography
+                              species={selectedSpecies}
+                              pokemon={selectedPokemon}
+                            />
+                          );
+                          // this will need a future refactor
+                          switch (item) {
+                            case 'biography':
+                              page = (
+                                <PokemonDetailsBiography
+                                  species={selectedSpecies}
+                                  pokemon={selectedPokemon}
+                                />
+                              );
+                              break;
+                            case 'stats':
+                              page = (
+                                <PokemonDetailsStats
+                                  pokemon={selectedPokemon}
+                                />
+                              );
+                              break;
+                            case 'evolutions':
+                              page = (
+                                <PokemonDetailsEvolution
+                                  selectedIds={selectedEvolutionPokemonIds}
+                                  chainLinks={chainLinks}
+                                  selectedBackgroundColor={
+                                    selectedBackgroundColor
+                                  }
+                                />
+                              );
+                              break;
+                            default:
+                              break;
+                          }
+                          return (
+                            <animated.div
+                              key={key}
+                              style={{
+                                ...props,
+                                position: 'relative',
+                                width: '100%',
+                                height: '100%',
+                              }}
+                            >
+                              {page}
+                            </animated.div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+          </React.Fragment>
+        </React.Fragment>
+      )}
+    </Layout>
+  );
 }
+export default PokemonDetailsPage
